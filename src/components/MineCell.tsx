@@ -11,6 +11,7 @@ interface IMineCell {
     isBomb: boolean;
     neighborBombs: number;
     state: CellState;
+    isPlayable: boolean;
     onCellTriggered: (row: number, col: number, new_state: CellState) => void;
 }
 
@@ -22,23 +23,23 @@ export const MineCell: React.FC<IMineCell> = ({
     isBomb,
     neighborBombs,
     state,
-    onCellTriggered
+    onCellTriggered,
+    isPlayable
 }) => {
     const onOpened = (e : React.MouseEvent ) => {
-        console.log(e.nativeEvent.button);
-        if (e.nativeEvent.button === 2)
+        if (state === CellState.FLAGGED)
         {
-            console.log('right click');
+            return;
         }
-        if (state !== CellState.OPENED) {
-            onCellTriggered(row_index, col_index, CellState.OPENED);
-        } else {
-            onCellTriggered(row_index, col_index, CellState.OPENED);
-        };
+        onCellTriggered(row_index, col_index, CellState.OPENED);
     };
 
     const onRightClick = (e : React.MouseEvent) => {
         e.preventDefault();
+        if (!isPlayable)
+        {
+            return;
+        }
         if (state === CellState.UNOPENED) {
             onCellTriggered(row_index, col_index, CellState.FLAGGED);
         }
@@ -61,7 +62,7 @@ export const MineCell: React.FC<IMineCell> = ({
     };
 
     return (
-        <Button isIconOnly color="primary" radius="none" variant={state == CellState.OPENED ? "faded" : "bordered"} className="mineCell" onClick={onOpened} onContextMenu={onRightClick}>
+        <Button key={"button_"+row_index+"_"+col_index} isIconOnly color="primary" radius="none" variant={state == CellState.OPENED ? "faded" : "bordered"} className="mineCell" onClick={onOpened} onContextMenu={onRightClick} disabled={!isPlayable}>
             {getCellContent()}
         </Button>
     )
