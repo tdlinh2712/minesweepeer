@@ -16,6 +16,18 @@ export enum GameResult {
     LOSE
 }
 
+export enum GameLevel {
+    BEGINNER = "Beginner",
+    INTERMMEDIATE = "Intermmediate",
+    EXPERT = "Expert"
+}
+
+export interface IGameDimension {
+    rows : number;
+    cols : number;
+    mines : number;
+}
+
 export interface ICell {
     isBomb: boolean;
     mineNeighbors: number;
@@ -29,8 +41,13 @@ export interface IMineSweeper {
 
 export interface IMineBoard {
     opened_cells: number;
-    row: number;
-    col: number;
+    rows: number;
+    cols: number;
     mines: number;
     cells: ICell[][];
+}
+
+export interface IDifficultySelection {
+    level : GameLevel,
+    handleSetGameLevel : (selected : string) => void
 }
