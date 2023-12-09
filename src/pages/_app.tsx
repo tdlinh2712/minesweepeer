@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import '@/styles/module.css'
 import type { AppProps } from 'next/app'
 import {NextUIProvider} from '@nextui-org/react'
 
